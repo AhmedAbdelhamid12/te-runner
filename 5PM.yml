@@ -3,7 +3,7 @@ name: Run TE Balance Daily 5PM
 # الجدولة:
 on:
   schedule:
-    - cron: '45 14 * * *'
+    - cron: '50 14 * * *'
   workflow_dispatch:
 jobs:
   te-balance:
