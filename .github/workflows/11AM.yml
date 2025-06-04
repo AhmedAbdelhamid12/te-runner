@@ -1,5 +1,5 @@
 .github/workflows/11AM.yml
-name:Run TE Balance (Column H)
+name:Runam
 # الجدولة:
 on:
   schedule:
@@ -49,6 +49,6 @@ jobs:
           echo "${{ secrets.AHMED_CREDENTIALS_JSON }}" > credentials.json
 
       # 7. تشغيل السكربت تحت Xvfb (لكي يعمل Chrome headless بدون واجهة)
-      - name: Run TE Balance (Column H)
+      - name:Runamm
         run: |
           xvfb-run --auto-servernum --server-args='-screen 0 1920x1080x24' python3 11AM.py
