@@ -1,6 +1,6 @@
 .github/workflows/5PM.yml
-name: Run TE Balance Daily 5PM
-# الجدولة:
+name:Run TE Balance (Column I)
+
 on:
   schedule:
     - cron: '55 14 * * *'
@@ -49,6 +49,6 @@ jobs:
           echo "${{ secrets.AHMED_CREDENTIALS_JSON }}" > credentials.json
 
       # 7. تشغيل السكربت تحت Xvfb (لكي يعمل Chrome headless بدون واجهة)
-      - name: Run 5PM script
+      - name:Run TE Balance (Column I)
         run: |
           xvfb-run --auto-servernum --server-args='-screen 0 1920x1080x24' python3 5PM.py
