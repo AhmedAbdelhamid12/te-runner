@@ -1,33 +1,29 @@
-.github/workflows/5PM.yml
-name:Run TE Balance (Column I)
+name: Run TE Balance → Column I
 
 on:
   schedule:
-    - cron: '0 15 * * *'
+    - cron: '15 15 * * *'
   workflow_dispatch:
+
 jobs:
-  te-balance:
+  run-balance-H:
     runs-on: ubuntu-latest
 
     steps:
-      # 1. يُنفّذ أولًا checkout لجلب الملفات من المستودع
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      # 2. إعداد Python
       - name: Set up Python 3.x
         uses: actions/setup-python@v4
         with:
           python-version: '3.x'
 
-      # 3. تثبيت المتطلبات (Chrome وChromedriver وpip packages)
       - name: Install dependencies
         run: |
           sudo apt-get update
           sudo apt-get install -y wget unzip xvfb libx11-dev libxkbfile-dev libsecret-1-dev
           pip install selenium gspread oauth2client
 
-      # 4. تثبيت Google Chrome
       - name: Install Google Chrome
         run: |
           wget -q -O - https://dl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
@@ -35,7 +31,6 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y google-chrome-stable
 
-      # 5. تثبيت ChromeDriver (تلقائيًا بناءً على إصدار Chrome)
       - name: Install ChromeDriver
         run: |
           CHROME_VERSION=$(google-chrome --version | grep -oP '\d+\.\d+\.\d+')
@@ -43,12 +38,11 @@ jobs:
           sudo unzip /tmp/chromedriver.zip -d /usr/local/bin/
           sudo chmod +x /usr/local/bin/chromedriver
 
-      # 6. توليد credentials.json محليًا من Secret
       - name: Create credentials.json from Secret
         run: |
           echo "${{ secrets.AHMED_CREDENTIALS_JSON }}" > credentials.json
 
-      # 7. تشغيل السكربت تحت Xvfb (لكي يعمل Chrome headless بدون واجهة)
-      - name:Run TE Balance (Column I)
+      - name: Run TE Balance (Column I)
         run: |
-          xvfb-run --auto-servernum --server-args='-screen 0 1920x1080x24' python3 5PM.py
+          xvfb-run --auto-servernum --server-args='-screen 0 1920x1080x24' \
+            python3 5PM.py
