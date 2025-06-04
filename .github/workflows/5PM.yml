@@ -3,7 +3,7 @@ name:Run TE Balance (Column I)
 
 on:
   schedule:
-    - cron: '55 14 * * *'
+    - cron: '0 15 * * *'
   workflow_dispatch:
 jobs:
   te-balance:
