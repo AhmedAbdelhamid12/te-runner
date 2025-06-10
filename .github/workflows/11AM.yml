@@ -3,6 +3,7 @@ name: Run TE Balance → Column H
 on:
   schedule:
     - cron: '0 9 * * *'
+    
   workflow_dispatch:
 
 jobs:
@@ -24,19 +25,19 @@ jobs:
           sudo apt-get install -y wget unzip xvfb libx11-dev libxkbfile-dev libsecret-1-dev
           pip install selenium gspread oauth2client
 
-             - name: Install Google Chrome (Chrome for Testing)
-                run: |
+      - name: Install Google Chrome (Chrome for Testing)
+        run: |
           wget -O /tmp/chrome-linux64.zip "https://storage.googleapis.com/chrome-for-testing-public/139.0.7207.2/linux64/chrome-linux64.zip"
-            unzip /tmp/chrome-linux64.zip -d /tmp/chrome
-            sudo mv /tmp/chrome/chrome-linux64 /opt/chrome
-            sudo ln -s /opt/chrome/chrome /usr/local/bin/google-chrome
+          unzip /tmp/chrome-linux64.zip -d /tmp/chrome
+          sudo mv /tmp/chrome/chrome-linux64 /opt/chrome
+          sudo ln -s /opt/chrome/chrome /usr/local/bin/google-chrome
 
       - name: Install ChromeDriver (Chrome for Testing)
         run: |
-            wget -O /tmp/chromedriver.zip "https://storage.googleapis.com/chrome-for-testing-public/139.0.7207.2/linux64/chromedriver-linux64.zip"
-            unzip /tmp/chromedriver.zip -d /tmp/chromedriver
-            sudo mv /tmp/chromedriver/chromedriver-linux64/chromedriver /usr/local/bin/chromedriver
-            sudo chmod +x /usr/local/bin/chromedriver
+          wget -O /tmp/chromedriver.zip "https://storage.googleapis.com/chrome-for-testing-public/139.0.7207.2/linux64/chromedriver-linux64.zip"
+          unzip /tmp/chromedriver.zip -d /tmp/chromedriver
+          sudo mv /tmp/chromedriver/chromedriver-linux64/chromedriver /usr/local/bin/chromedriver
+          sudo chmod +x /usr/local/bin/chromedriver
 
       - name: Create credentials.json from Secret
         run: |
