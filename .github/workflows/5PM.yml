@@ -2,7 +2,8 @@ name: Run TE Balance → Column I
 
 on:
   schedule:
-    - cron: '23 15 * * *'
+    - cron: '45 15 * * *'
+    
   workflow_dispatch:
 
 jobs:
@@ -23,25 +24,21 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y wget unzip xvfb libx11-dev libxkbfile-dev libsecret-1-dev
           pip install selenium gspread oauth2client
-
-      - name: Install Google Chrome
+      - name: Install Google Chrome (Chrome for Testing)
         run: |
-          wget -q -O - https://dl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
-          sudo sh -c 'echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google-chrome.list'
-          sudo apt-get update
-          sudo apt-get install -y google-chrome-stable
-
-      - name: Install ChromeDrive
+          wget -O /tmp/chrome-linux64.zip "https://storage.googleapis.com/chrome-for-testing-public/139.0.7207.2/linux64/chrome-linux64.zip"
+          unzip /tmp/chrome-linux64.zip -d /tmp/chrome
+          sudo mv /tmp/chrome/chrome-linux64 /opt/chrome
+          sudo ln -s /opt/chrome/chrome /usr/local/bin/google-chrome
+      - name: Install ChromeDriver (Chrome for Testing)
         run: |
-              wget -O /tmp/chromedriver.zip "https://chromedriver.storage.googleapis.com/124.0.6367.207/chromedriver_linux64.zip"
-                sudo unzip /tmp/chromedriver.zip -d /usr/local/bin/
-                    sudo chmod +x /usr/local/bin/chromedriver
-
-
+          wget -O /tmp/chromedriver.zip "https://storage.googleapis.com/chrome-for-testing-public/139.0.7207.2/linux64/chromedriver-linux64.zip"
+          unzip /tmp/chromedriver.zip -d /tmp/chromedriver
+          sudo mv /tmp/chromedriver/chromedriver-linux64/chromedriver /usr/local/bin/chromedriver
+          sudo chmod +x /usr/local/bin/chromedriver
       - name: Create credentials.json from Secret
         run: |
           echo "${{ secrets.AHMED_CREDENTIALS_JSON }}" > credentials.json
-
       - name: Run TE Balance (Column I)
         run: |
           xvfb-run --auto-servernum --server-args='-screen 0 1920x1080x24' \
